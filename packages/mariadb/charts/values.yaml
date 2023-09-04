@@ -38,7 +38,7 @@ podSecurityContext: {}
 securityContext: {}
 
 # Password for the mariadb ironic user
-password: "test"
+password: "changeme"
 
 persistence:
   # storageClass for the mariadb data volume
