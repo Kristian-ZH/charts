@@ -15,4 +15,5 @@ spec:
   {{- end }}
   selector:
     {{- include "ironic.selectorLabels" . | nindent 4 }}
+  type: LoadBalancer
 {{- end -}}

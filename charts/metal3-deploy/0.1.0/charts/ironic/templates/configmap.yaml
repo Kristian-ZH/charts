@@ -11,9 +11,9 @@ data:
   {{- end }}
   {{- $dnsDomain := .Values.global.dnsDomain }}      
   {{- with .Values.baremetaloperator }}      
-  CACHEURL: {{ $protocol }}://cache.ironic.{{ $dnsDomain }}/images
-  DEPLOY_KERNEL_URL: {{ $protocol }}://boot.ironic.{{ $dnsDomain }}/images/ironic-python-agent.kernel
-  DEPLOY_RAMDISK_URL: {{ $protocol }}://boot.ironic.{{ $dnsDomain }}/images/ironic-python-agent.initramfs
+  CACHEURL: http://10.25.56.129:6180/images
+  DEPLOY_KERNEL_URL: http://10.25.56.129:6180/images/ironic-python-agent.kernel
+  DEPLOY_RAMDISK_URL: http://10.25.56.129:6180/images/ironic-python-agent.initramfs
   {{ if  .dhcpHosts }}
   DHCP_HOSTS: {{ .dhcpHosts }}
   {{ end }}
@@ -23,15 +23,15 @@ data:
   {{ if .ipaBaseUri }}
   IPA_BASEURI: {{ .ipaBaseUri }}
   {{ end }}
-  IRONIC_API_BASE_URL: {{ $protocol }}://{{ tpl .ironicApiHost $ }}
-  IRONIC_API_HOST: {{ tpl .ironicApiHost $ }}
-  IRONIC_API_HTTPD_SERVER_NAME: {{ tpl .ironicApiHost $ }}
-  IRONIC_BOOT_BASE_URL: {{ $protocol }}://boot.ironic.{{ $dnsDomain }}
-  IRONIC_ENDPOINT: {{ $protocol }}://{{ tpl .ironicApiHost $ }}/v1/
-  IRONIC_INSPECTOR_BASE_URL: {{ $protocol }}://{{ tpl .ironicInspectorHost $ }}
-  IRONIC_INSPECTOR_ENDPOINT: {{ $protocol }}://{{ tpl .ironicInspectorHost $ }}/v1/
-  IRONIC_INSPECTOR_HOST: {{ tpl .ironicInspectorHost $ }}
-  IRONIC_INSPECTOR_HTTPD_SERVER_NAME: {{ tpl .ironicInspectorHost $ }}
+  IRONIC_API_BASE_URL: http://10.25.56.129:6385
+  IRONIC_API_HOST: 10.25.56.129:6385
+  IRONIC_API_HTTPD_SERVER_NAME: 10.25.56.129:6385
+  IRONIC_BOOT_BASE_URL: http://10.25.56.129:6180
+  IRONIC_ENDPOINT: http://10.25.56.129:6385/v1/
+  IRONIC_INSPECTOR_BASE_URL: http://10.25.56.129:5050
+  IRONIC_INSPECTOR_ENDPOINT: http://10.25.56.129:5050/v1/
+  IRONIC_INSPECTOR_HOST: 10.25.56.129:5050
+  IRONIC_INSPECTOR_HTTPD_SERVER_NAME: 10.25.56.129:5050
   IRONIC_RAMDISK_SSH_KEY: {{ .ironicRamdiskSshKey }}
   IRONIC_VMEDIA_HTTPD_SERVER_NAME: {{ tpl .bootServerAddress $ }} 
   {{- end }}
@@ -49,7 +49,7 @@ data:
   LISTEN_ALL_INTERFACES: "true"
   {{- if  ( .Values.global.enable_tls ) }}
   RESTART_CONTAINER_CERTIFICATE_UPDATED: "true"
-  IRONIC_KERNEL_PARAMS: console=ttyS0 suse.cafile={{ $protocol }}://boot.ironic.{{ $dnsDomain }}/tstcerts/ca.crt
+  IRONIC_KERNEL_PARAMS: console=ttyS0 suse.cafile=10.25.56.129:6180/tstcerts/ca.crt
   IPA_INSECURE: "0"
   {{- else }}
   RESTART_CONTAINER_CERTIFICATE_UPDATED: "false"
