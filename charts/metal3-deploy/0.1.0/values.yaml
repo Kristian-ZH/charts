@@ -20,14 +20,14 @@ global:
   # additional details.
   # In addition, the "dnsConfig" section must by updated with the IP and search domain
   # of the external DNS server.
-  enable_external_dns: true
+  enable_external_dns: false
 
   # whether to enable PowerDNS
   # NOTE: although PowerDNS can be enabled without enabling external-dns,
   # but it would not be very useful in the context of Metal3 deployment.
   # Therefore, it is recommended to enable PowerDNS in conjunction with
   # external-dns.
-  enable_pdns: true
+  enable_pdns: false
 
   # whether to use NFS provisioner to create the storage for Ironic
   #
