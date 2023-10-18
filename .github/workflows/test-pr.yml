@@ -1,0 +1,53 @@
+name: Test Helm Chart
+
+on:
+  pull_request:
+    paths:
+      - '**/assets/metal3/metal3-0.2.0.tgz'  # Adjust the path based on your Helm chart structure
+
+jobs:
+  test-helm-chart:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Install K3s
+      run: |
+        curl -sfL https://get.k3s.io | sh -
+
+    - name: Setup kubectl
+      run: |
+        export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+
+    - name: Install Helm
+      run: |
+        curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+        chmod +x get_helm.sh
+        ./get_helm.sh
+
+    - name: Get Helm Chart from PR
+      id: get-chart
+      run: |
+        PR_NUMBER=$(echo "${{ github.event_name }}" | grep -oP '(?<=pull/)\d+')
+        curl -sSL "https://api.github.com/repos/${{ github.repository }}/pull/${PR_NUMBER}/files?per_page=100" \
+          | jq -r '.[] | select(.filename | endswith("assets/metal3/metal3-0.2.0.tgz")) | .raw_url' \
+          | xargs curl -sSL -o chart.tgz
+        tar xvzf chart.tgz
+
+    - name: Deploy Helm Chart
+      run: |
+        helm install my-release ./path/to/extracted/chart
+
+    - name: Run Helm Tests (if any)
+      run: |
+        # Add commands to run Helm tests
+
+    - name: Uninstall Helm Chart
+      run: |
+        helm uninstall my-release
+
+    - name: Uninstall K3s
+      run: |
+        /usr/local/bin/k3s-uninstall.sh
