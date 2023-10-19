@@ -143,8 +143,8 @@ jobs:
     - name: Verify externalIP of the Service
       run: |
         export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
-        # Sleep for 5 seconds in order to give enough time to the operator
-        sleep 5
+        # Sleep for 30 seconds in order to give enough time to the operator
+        sleep 30
         
         expected_service_ip="1.1.1.1"
         actual_service_ip=$(kubectl get svc example-service -o yaml -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
