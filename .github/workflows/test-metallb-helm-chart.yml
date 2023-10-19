@@ -108,7 +108,7 @@ jobs:
           name: ip-pool
         spec:
           addresses:
-          - 1.1.1.1/32
+          - 192.0.2.1/32
         EOF
 
         cat <<-EOF | kubectl apply -f -
@@ -146,8 +146,9 @@ jobs:
         
         # Sleep for 5 seconds in order to give enough time to the operator
         sleep 5
-        
-        expected_service_ip="1.1.1.1"
+
+        # TEST-NET-1
+        expected_service_ip="192.0.2.1"
         actual_service_ip=$(kubectl get svc example-service -o yaml -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
         if [ "$expected_service_ip" != "$actual_service_ip" ]; then
