@@ -37,7 +37,7 @@ jobs:
 
     - name: Install K3s
       run: |
-        curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server --cluster-init --write-kubeconfig-mode=644 --disable=servicelb" K3S_TOKEN=foobar sh -
+        curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server --cluster-init --write-kubeconfig-mode=644 --disable=servicelb --disable=traefik" K3S_TOKEN=foobar sh -
 
     - name: Install Helm
       run: |
@@ -144,10 +144,8 @@ jobs:
       run: |
         export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
         
-        # Sleep for 30 seconds in order to give enough time to the operator
-        sleep 30
-
-        kubectl get svc -A
+        # Sleep for 5 seconds in order to give enough time to the operator
+        sleep 5
         
         expected_service_ip="1.1.1.1"
         actual_service_ip=$(kubectl get svc example-service -o yaml -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
