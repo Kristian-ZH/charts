@@ -45,6 +45,10 @@ jobs:
         chmod +x get_helm.sh
         ./get_helm.sh
 
+    - name: Install Helm Diff Plugin
+      run: |
+        helm plugin install https://github.com/databus23/helm-diff
+
     - name: Install CertManager
       run: |
         export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
